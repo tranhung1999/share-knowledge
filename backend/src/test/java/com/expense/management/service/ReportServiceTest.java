@@ -57,7 +57,7 @@ class ReportServiceTest {
     void getByTypeReport_mapsCorrectly() {
         Object[] row = {"TRAVEL", 5L, new BigDecimal("1250.00")};
         when(expenseRepository.getExpenseByTypeReport(any(), any()))
-                .thenReturn(List.of(row));
+                .thenReturn(List.<Object[]>of(row));
 
         List<ExpenseTypeData> result = reportService.getExpenseByTypeReport(null, null);
 
@@ -72,7 +72,7 @@ class ReportServiceTest {
     void getDepartmentReport_mapsCorrectly() {
         Object[] row = {"Engineering", 8L, new BigDecimal("3200.00")};
         when(expenseRepository.getDepartmentReport(any(), any()))
-                .thenReturn(List.of(row));
+                .thenReturn(List.<Object[]>of(row));
 
         List<DepartmentData> result = reportService.getDepartmentReport(
                 LocalDate.of(2025, 1, 1), LocalDate.now());
@@ -87,7 +87,7 @@ class ReportServiceTest {
     @DisplayName("getMonthlyReport: should map year/month correctly")
     void getMonthlyReport_mapsCorrectly() {
         Object[] row = {2025.0, 3.0, 12L, new BigDecimal("5500.00")};
-        when(expenseRepository.getMonthlyReport(2025)).thenReturn(List.of(row));
+        when(expenseRepository.getMonthlyReport(2025)).thenReturn(List.<Object[]>of(row));
 
         List<MonthlyData> result = reportService.getMonthlyReport(2025);
 

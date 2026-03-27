@@ -13,7 +13,7 @@ const NotificationsPage: React.FC = () => {
   const navigate = useNavigate();
   const { notifications, unreadCount, isLoading } = useAppSelector(s => s.notifications);
 
-  useEffect(() => { dispatch(fetchNotifications()); }, [dispatch]);
+  useEffect(() => { dispatch(fetchNotifications({})); }, [dispatch]);
 
   const handleClick = (id: number, expenseId: number | null, isRead: boolean) => {
     if (!isRead) dispatch(markNotificationRead(id));
