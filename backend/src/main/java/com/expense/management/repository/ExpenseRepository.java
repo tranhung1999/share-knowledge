@@ -44,8 +44,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
         SELECT e.expenseType, COUNT(e), SUM(e.amount)
         FROM Expense e
         WHERE e.status = 'PAID'
-          AND (:startDate IS NULL OR e.expenseDate >= :startDate)
-          AND (:endDate IS NULL OR e.expenseDate <= :endDate)
+          AND e.expenseDate >= :startDate
+          AND e.expenseDate <= :endDate
         GROUP BY e.expenseType
         ORDER BY SUM(e.amount) DESC
         """)
@@ -58,19 +58,29 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
                COUNT(e), SUM(e.amount)
         FROM Expense e
         WHERE e.status = 'PAID'
-          AND (:year IS NULL OR EXTRACT(YEAR FROM e.expenseDate) = :year)
+          AND EXTRACT(YEAR FROM e.expenseDate) = :year
         GROUP BY EXTRACT(YEAR FROM e.expenseDate), EXTRACT(MONTH FROM e.expenseDate)
         ORDER BY EXTRACT(YEAR FROM e.expenseDate), EXTRACT(MONTH FROM e.expenseDate)
         """)
-    List<Object[]> getMonthlyReport(@Param("year") Integer year);
+    List<Object[]> getMonthlyReport(@Param("year") int year);
+
+    @Query("""
+        SELECT EXTRACT(YEAR FROM e.expenseDate), EXTRACT(MONTH FROM e.expenseDate),
+               COUNT(e), SUM(e.amount)
+        FROM Expense e
+        WHERE e.status = 'PAID'
+        GROUP BY EXTRACT(YEAR FROM e.expenseDate), EXTRACT(MONTH FROM e.expenseDate)
+        ORDER BY EXTRACT(YEAR FROM e.expenseDate), EXTRACT(MONTH FROM e.expenseDate)
+        """)
+    List<Object[]> getMonthlyReportAllYears();
 
     @Query("""
         SELECT u.department.name, COUNT(e), SUM(e.amount)
         FROM Expense e
         JOIN e.employee u
         WHERE e.status = 'PAID'
-          AND (:startDate IS NULL OR e.expenseDate >= :startDate)
-          AND (:endDate IS NULL OR e.expenseDate <= :endDate)
+          AND e.expenseDate >= :startDate
+          AND e.expenseDate <= :endDate
         GROUP BY u.department.name
         ORDER BY SUM(e.amount) DESC
         """)

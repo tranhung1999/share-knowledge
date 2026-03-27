@@ -70,7 +70,9 @@ public class ReportService {
 
     @Transactional(readOnly = true)
     public List<MonthlyData> getMonthlyReport(Integer year) {
-        List<Object[]> rows = expenseRepository.getMonthlyReport(year);
+        List<Object[]> rows = year != null
+                ? expenseRepository.getMonthlyReport(year)
+                : expenseRepository.getMonthlyReportAllYears();
         List<MonthlyData> result = new ArrayList<>();
         for (Object[] row : rows) {
             int y = ((Number) row[0]).intValue();
@@ -88,7 +90,9 @@ public class ReportService {
 
     @Transactional(readOnly = true)
     public List<DepartmentData> getDepartmentReport(LocalDate startDate, LocalDate endDate) {
-        List<Object[]> rows = expenseRepository.getDepartmentReport(startDate, endDate);
+        List<Object[]> rows = expenseRepository.getDepartmentReport(
+                startDate != null ? startDate : LocalDate.of(1900, 1, 1),
+                endDate   != null ? endDate   : LocalDate.now().plusYears(50));
         List<DepartmentData> result = new ArrayList<>();
         for (Object[] row : rows) {
             result.add(DepartmentData.builder()
@@ -229,7 +233,9 @@ public class ReportService {
     }
 
     private List<ExpenseTypeData> buildTypeData(LocalDate startDate, LocalDate endDate) {
-        List<Object[]> rows = expenseRepository.getExpenseByTypeReport(startDate, endDate);
+        List<Object[]> rows = expenseRepository.getExpenseByTypeReport(
+                startDate != null ? startDate : LocalDate.of(1900, 1, 1),
+                endDate   != null ? endDate   : LocalDate.now().plusYears(50));
         List<ExpenseTypeData> result = new ArrayList<>();
         for (Object[] row : rows) {
             result.add(ExpenseTypeData.builder()

@@ -22,14 +22,14 @@ INSERT INTO departments (name, description) VALUES
 INSERT INTO users (email, password_hash, full_name, department_id, role_id, is_active)
 VALUES (
     'admin@company.com',
-    '$2b$10$ux8pWjeUkH1xI1.4d8vaIOZFWIIUvhwP6LZDeKNnUpfHTJ1tFWU6.',
+    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
     'System Administrator',
     (SELECT id FROM departments WHERE name = 'Finance'),
     (SELECT id FROM roles WHERE name = 'ADMIN'),
     TRUE
 );
 
--- Manager User (password: password)
+-- Manager User (password: Manager@123)
 INSERT INTO users (email, password_hash, full_name, department_id, role_id, is_active)
 VALUES (
     'manager@company.com',
@@ -40,7 +40,7 @@ VALUES (
     TRUE
 );
 
--- Accountant User (password: password)
+-- Accountant User (password: Accountant@123)
 INSERT INTO users (email, password_hash, full_name, department_id, role_id, is_active)
 VALUES (
     'accountant@company.com',
@@ -51,7 +51,7 @@ VALUES (
     TRUE
 );
 
--- Employee Users (password: password)
+-- Employee Users (password: Employee@123)
 INSERT INTO users (email, password_hash, full_name, department_id, role_id, is_active)
 VALUES (
     'alice@company.com',
